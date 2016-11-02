@@ -1,7 +1,7 @@
-/**
- * Created by bmiller on 3/19/15.
- * Edited by ethanchewy on 7/23/16->.
- */
+/*Ethan Chiu 2016. 
+Uses code from RuneStone Interactive
+PythonSyntaxChecker code is mine. Rest is from Runestone
+*/
 
 var isMouseDown = false;
 document.onmousedown = function() { isMouseDown = true };
@@ -77,6 +77,108 @@ ActiveCode.prototype.init = function(opts) {
         $(document).ready(this.runProg.bind(this));
     }
 };
+function check_syntax(code, result_cb)
+    {   
+    //Example error for guideline
+    var error_list = [{
+        line_no: null,
+        column_no_start: null,
+        column_no_stop: null,
+        fragment: null,
+        message: null,
+        severity: null
+    }];
+    
+    //Push and replace errors
+    function check(errors){
+        //Split errors individually by line => list
+        //var tokens = errors.split(/\r?\n/);
+        var number,message, severity, severity_color, id;
+        //Regex for fetching number
+        
+        //Clear array.
+        error_list = [{
+            line_no: null,
+            column_no_start: null,
+            column_no_stop: null,
+            fragment: null,
+            message: null,
+            severity: null
+        }];
+        //console.log(errors);
+        document.getElementById('errorslist').innerHTML = '';
+        $('#errorslist').append("<tr>"+"<th>Line</th>"+"<th>Severity</th>"+
+            "<th>Error</th>"+ "<th>More Info</th>"+"</tr>");
+
+        for(var x = 2; x < errors.length; x+=2){
+
+            //Sorting into line_no, etc.
+            //var match_number = errors[x].match(/\d+/);
+            //number = parseInt(match_number[0], 10);
+            //severity = errors[x].charAt(0);
+            //Split code based on colon
+            var message_split = errors[x].split(':');
+            //console.log(message_split);
+
+            number = message_split[1];
+
+            //Get severity after second colon
+            severity = message_split[2].charAt(2);
+
+            //Get message id by splitting
+            id = message_split[2].substring(2,7);
+
+            //Split to get message
+            message_split = message_split[2].split("]");
+            message = message_split[1];
+
+            //Set severity to necessary parameters
+            if(severity=="E"){
+                console.log("error");
+                severity="error";
+                severity_color="red";
+            } else if(severity=="W"){
+                console.log("error");
+                severity="warning";
+                severity_color="yellow";
+            }
+            //Push to error list        
+            error_list.push({
+                line_no: number, 
+                column_no_start: null,
+                column_no_stop: null,
+                fragment: null,
+                message: message, 
+                severity: severity
+            });
+
+            //Get help message for each id
+            var moreinfo = getHelp(id);
+            //Append all data to table
+            $('#errorslist').append("<tr>"+"<td>" + number + "</td>"
+                +"<td style=\"background-color:"+severity_color+";\"" + 
+                ">" + severity + "</td>"
+                +"<td>" + message + "</td>"
+                +"<td>" + moreinfo + "</td>"+"</tr>");
+            
+
+        }
+        
+        console.log("error_list"+error_list.toString());
+        result_cb(error_list);
+
+    }
+    //AJAX call to pylint
+    $.getJSON('/check_code', {
+      text :  code
+    }, function(data) {
+        console.log(data);
+        current_text = data;
+        //Check Text
+        check(current_text);
+        return false;
+    });
+}
 
 ActiveCode.prototype.createEditor = function (index) {
     this.containerDiv = document.createElement('div');
@@ -95,12 +197,24 @@ ActiveCode.prototype.createEditor = function (index) {
         this.containerDiv.appendChild(linkdiv);
     }
     this.containerDiv.appendChild(codeDiv);
-    var editor = CodeMirror(codeDiv, {value: this.code, lineNumbers: true,
-        mode: this.containerDiv.lang, indentUnit: 4,
-        matchBrackets: true, autoMatchParens: true,
-        extraKeys: {"Tab": "indentMore", "Shift-Tab": "indentLess"}
+    var editor = CodeMirror(codeDiv, {
+        value: this.code, 
+        lineNumbers: true,
+        extraKeys: {"Tab": "indentMore", "Shift-Tab": "indentLess"},
+        mode: {name: "python",
+               version: 2,
+               singleLineStringErrors: false},
+        indentUnit: 4,
+        styleActiveLine:true,
+        gutters: ["CodeMirror-lint-markers"],
+        lintWith: {
+            "getAnnotations": CodeMirror.remoteValidator,
+            "async" : true,
+            "check_cb":check_syntax
+        }
     });
 
+    /*
     // Make the editor resizable
     $(editor.getWrapperElement()).resizable({
         resize: function() {
@@ -108,6 +222,7 @@ ActiveCode.prototype.createEditor = function (index) {
             editor.refresh();
         }
     });
+    */
 
     // give the user a visual cue that they have changed but not saved
     editor.on('change', (function () {
@@ -756,7 +871,7 @@ ActiveCode.prototype.runProg = function() {
         (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = this.graphics;
         Sk.canvas = this.graphics.id; //todo: get rid of this here and in image
         $(this.runButton).attr('disabled', 'disabled');
-        $(this.codeDiv).switchClass("col-md-12","col-md-7",{duration:500,queue:false});
+        //$(this.codeDiv).switchClass("col-md-12","col-md-7",{duration:500,queue:false});
         $(this.outDiv).show({duration:700,queue:false});
 
         if (this.historyScrubber === null && !this.autorun) {

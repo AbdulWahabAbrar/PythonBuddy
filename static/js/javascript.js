@@ -3,6 +3,7 @@
 $(document).ready(function(){
 	//Pulls info from AJAX call and sends it off to codemirror's update linting
 	//Has callback result_cb
+	/*
 	function check_syntax(code, result_cb)
 	{	
 		//Example error for guideline
@@ -105,6 +106,8 @@ $(document).ready(function(){
 	    	return false;
 	    });
 	}
+	*/
+	/*
 
 	var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
         mode: {name: "python",
@@ -122,7 +125,7 @@ $(document).ready(function(){
 	        "check_cb":check_syntax
 	    },
     });
-
+	*/
     //Skulpt Config
 	function outf(text) { 
 	    var mypre = document.getElementById("output"); 

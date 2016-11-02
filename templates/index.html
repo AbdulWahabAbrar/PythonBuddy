@@ -8,11 +8,22 @@
 
     <!-- Scripts -->
     <script src="/static/js/jquery.js" type="text/javascript"></script>
-    
+
+    <script type="text/javascript" src="static/js/runestonebase.js"></script>
+    <script src="static/js/activecode.js" type="text/javascript"></script>
+    <script src="static/js/timed_activecode.js" type="text/javascript"></script>
+
     <script src="/static/codemirror/lib/codemirror.js"></script>
     <script src="/static/codemirror/lib/python.js"></script>
     <script src="/static/codemirror/lib/lint.js""></script>
     <script src="/static/js/cm-validator-remote.js" type="text/javascript"></script>
+
+    
+    <!-- Config For Rune-->
+    <script type="text/javascript">
+      eBookConfig = {};
+      eBookConfig.useRunestoneServices = true;
+    </script>
 
     <!--Codemirror Addons-->
     <script src="/static/codemirror/addon/search.js""></script>
@@ -52,13 +63,30 @@
 </div>
 <br>
 <div class="container">
-    <textarea id="txt">
-methods = []                       
-for i in range(10):                        
-    methodds.append(lambda x: x + i)        
+    <div class="row" id="core">
+      <div class="col-md-8">
+        <textarea id="txt" data-component="activecode" id=ac_example1 data-lang="python" data-timelimit=25000 data-codelens="false" data-audio='' data-caption='factorial'>
+def factorial(n):
+  return 1 if (n < 0) else n * factorial(n-1)
 
-print methods[0](10)
-    </textarea>
+====
+from unittest.gui import TestCaseGui
+
+class myTests(TestCaseGui):
+
+    def testOne(self):
+        self.assertEqual(factorial(3),6,"Try checking base case")
+        self.assertEqual(factorial(0),1,"Try using recursion")
+
+myTests().main()
+        </textarea>
+      </div>
+    </div>
+    <div class="col-md-4" id="grader_container">
+      <h3>Grader <i>(In Progress) </i><input id="grader_check" type="checkbox" name="my-checkbox" size="normal" data-on-color="success" data-on-color="info" data-on-text="Show"  data-off-text="Close" checked></h3>
+      <div id="grader-content">
+      </div>
+    </div>
     <br>
     <button type="button" id="run">Run</button> 
     <i>Run function still in development. Note that all errors have to be resovlved for the program to run.</i>
