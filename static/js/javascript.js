@@ -106,6 +106,7 @@ $(document).ready(function(){
 	    });
 	}
 
+	//Declare Editor 
 	var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
         mode: {name: "python",
                version: 2,
@@ -113,14 +114,9 @@ $(document).ready(function(){
         lineNumbers: true,
         indentUnit: 4,
         matchBrackets: true,
-        lint:true,
+        lint:{ 'getAnnotations': CodeMirror.remoteValidator, 'async': true, "check_cb":check_syntax},
         styleActiveLine:true,
-        gutters: ["CodeMirror-lint-markers"],
-        lintWith: {
-	        "getAnnotations": CodeMirror.remoteValidator,
-	        "async" : true,
-	        "check_cb":check_syntax
-	    },
+        gutters: ["CodeMirror-lint-markers"]
     });
 
     //Skulpt Config
@@ -133,6 +129,7 @@ $(document).ready(function(){
 	            throw "File not found: '" + x + "'";
 	    return Sk.builtinFiles["files"][x];
 	}
+
 	// Here's everything you need to run a python program in skulpt
 	// grab the code from your textarea
 	// get a reference to your pre element for output
