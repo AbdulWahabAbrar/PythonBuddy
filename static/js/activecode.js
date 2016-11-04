@@ -1163,7 +1163,22 @@ ActiveCode.prototype.runProg = function() {
         $(this.output).text('');
 
         $(this.eContainer).remove();
+        //Ethan Chiu's Code
+        console.log("sfd");
+        //AJAX call to run python
+        $.getJSON('/run_code', {
+          text :  this.editor.getValue()
+        }, function(data) {
+            print_result(data);
+            return false;
+        });
+        
+        function print_result(data){
+            document.getElementById('output').innerHTML = '';
+            $("#output").append("<pre>"+data+"</pre>");
+        }
 
+        /*
         Sk.configure({output : this.outputfun.bind(this),
               read   : this.builtinRead,
               python3: this.python3,
@@ -1171,13 +1186,14 @@ ActiveCode.prototype.runProg = function() {
               inputfunTakesPrompt: true,
         });
         Sk.divid = this.divid;
-
+        */
         this.setTimeLimit();
 
+        /*
         (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = this.graphics;
         Sk.canvas = this.graphics.id; //todo: get rid of this here and in image
-
-        $(this.runButton).attr('disabled', 'disabled');
+    */
+        //$(this.runButton).attr('disabled', 'disabled');
         $(this.codeDiv).switchClass("col-md-12","col-md-7",{duration:500,queue:false});
         $(this.outDiv).show({duration:700,queue:false});
 
@@ -1206,24 +1222,27 @@ ActiveCode.prototype.runProg = function() {
                 hresolver.resolve();
             }).bind(this));
 
-
+        /*
         var myPromise = Sk.misceval.asyncToPromise(function() {
 
             return Sk.importMainWithBody("<stdin>", false, prog, true);
         });
+        */
 
 
         // Make sure that the history scrubber is fully initialized AND the code has been run
         // before we start logging stuff.
+        /*
         Promise.all([myPromise,hresolver]).then((function(mod) { // success
             $(this.runButton).removeAttr('disabled');
-            this.logRunEvent({'div_id': this.divid, 'code': this.editor.getValue(), 'errinfo': 'success', 'to_save':saveCode, 'prefix': this.pretext, 'suffix':this.suffix}); // Log the run event
+            //this.logRunEvent({'div_id': this.divid, 'code': this.editor.getValue(), 'errinfo': 'success', 'to_save':saveCode, 'prefix': this.pretext, 'suffix':this.suffix}); // Log the run event
         }).bind(this),
             (function(err) {  // fail
             $(this.runButton).removeAttr('disabled');
-            this.logRunEvent({'div_id': this.divid, 'code': this.editor.getValue(), 'errinfo': err.toString(), 'to_save':saveCode, 'prefix': this.pretext, 'suffix':this.suffix}); // Log the run event
+            //this.logRunEvent({'div_id': this.divid, 'code': this.editor.getValue(), 'errinfo': err.toString(), 'to_save':saveCode, 'prefix': this.pretext, 'suffix':this.suffix}); // Log the run event
             this.addErrorMessage(err)
                 }).bind(this));
+        */
 
 
         if (typeof(allVisualizers) != "undefined") {
@@ -1231,22 +1250,9 @@ ActiveCode.prototype.runProg = function() {
                 e.redrawConnectors();
                 });
             }
-        /*
-        //Ethan Chiu's Code
-        console.log("sfd");
-        //AJAX call to run python
-        $.getJSON('/run_code', {
-          text :  editor.getValue()
-        }, function(data) {
-            print_result(data);
-            return false;
-        });
         
-        function print_result(data){
-            document.getElementById('output').innerHTML = '';
-            $("#output").append("<pre>"+data+"</pre>");
-        }
-        */
+        
+        
 
     };
 
