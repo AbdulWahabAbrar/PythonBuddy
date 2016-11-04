@@ -85,7 +85,8 @@ class myTests(TestCaseGui):
 myTests().main()
         </textarea>
     </div>
-    <div id="output">
+    <h3>Output</h3>
+    <div id="output"  class="container">
         <pre></pre>
     </div>
     <!-- Grader -->
@@ -93,8 +94,8 @@ myTests().main()
     <div id="grader"></div>
   </div>
   <div id="append_text">
-        <h2>Pylint Output Info</h2>
-        <table id="errorslist" style="display: inline-block;">
+        <h3>Pylint Output Info</h3>
+        <table id="errorslist" style="display: inline-block;border: solid 2px white;">
             <tr>
                 <th>Line</th>
                 <th>Severity</th>
@@ -102,11 +103,16 @@ myTests().main()
                 <th>More Info</th>
             </tr>
         </table>
+        <style>
+        td {
+            border: solid 2px white;
+        }
+        </style>
     </div>
-
+    <br>
   <footer>
     Created by Ethan Chiu. Source Code: <a href="https://github.com/ethanchewy/PythonBuddy">https://github.com/ethanchewy/PythonBuddy</a>
-    </footer>
+</footer>
 </body>
 
 </html> 
