@@ -1,4 +1,3 @@
-methods = []
-for i in range(10):
-    methodds.append(lambda x: x + i)
-print methods[0](10)
+def factorial(n):
+    return 1 if (n < 0) else n * factorial(n-1)sdf
+

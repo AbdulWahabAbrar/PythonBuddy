@@ -1,8 +1,8 @@
 CodeMirror.remoteValidator = function(cm, updateLinting, options) {
 	//Current value of text
 	var text = cm.getValue();
-
-
+	console.log(text);
+	console.log("remotevalidator");
 	if(text.trim() == "")
 	{
 		updateLinting(cm, []);
