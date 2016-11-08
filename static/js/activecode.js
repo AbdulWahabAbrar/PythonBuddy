@@ -1073,8 +1073,6 @@ errorText.NotImplementedError = "This error occurs when you try to use a builtin
 errorText.NotImplementedErrorFix = "For now the only way to fix this is to not use the function.  There may be workarounds.  If you really need this builtin function then file a bug report and tell us how you are trying to use the function.";
 
 
-
-
 ActiveCode.prototype.setTimeLimit = function (timer) {
     var timelimit = this.timelimit;
     if (timer !== undefined ) {
@@ -1165,7 +1163,7 @@ ActiveCode.prototype.runProg = function() {
         $(this.eContainer).remove();
         //Ethan Chiu's Code
         console.log("sfd");
-        //AJAX call to run python
+        //AJAX call to run python => to app.py
         $.getJSON('/run_code', {
           text :  this.editor.getValue()
         }, function(data) {
@@ -1210,13 +1208,13 @@ ActiveCode.prototype.runProg = function() {
                     saveCode = "True";
                     this.history.push(this.editor.getValue());
                     this.timestamps.push((new Date()).toLocaleString());
-                    $(this.historyScrubber).slider("option", "max", this.history.length - 1)
-                    $(this.historyScrubber).slider("option", "value", this.history.length - 1)
+                    $(this.historyScrubber).slider("option", "max", this.history.length - 1);
+                    $(this.historyScrubber).slider("option", "value", this.history.length - 1);
                 } else {
                     saveCode = "False";
                 }
 
-                if (this.historyScrubber == null) {
+                if (this.historyScrubber === null) {
                     saveCode = "False";
                 }
                 hresolver.resolve();
@@ -1232,7 +1230,7 @@ ActiveCode.prototype.runProg = function() {
 
         // Make sure that the history scrubber is fully initialized AND the code has been run
         // before we start logging stuff.
-        /*
+        
         Promise.all([myPromise,hresolver]).then((function(mod) { // success
             $(this.runButton).removeAttr('disabled');
             //this.logRunEvent({'div_id': this.divid, 'code': this.editor.getValue(), 'errinfo': 'success', 'to_save':saveCode, 'prefix': this.pretext, 'suffix':this.suffix}); // Log the run event
@@ -1240,9 +1238,9 @@ ActiveCode.prototype.runProg = function() {
             (function(err) {  // fail
             $(this.runButton).removeAttr('disabled');
             //this.logRunEvent({'div_id': this.divid, 'code': this.editor.getValue(), 'errinfo': err.toString(), 'to_save':saveCode, 'prefix': this.pretext, 'suffix':this.suffix}); // Log the run event
-            this.addErrorMessage(err)
+            this.addErrorMessage(err);
                 }).bind(this));
-        */
+        
 
 
         if (typeof(allVisualizers) != "undefined") {
